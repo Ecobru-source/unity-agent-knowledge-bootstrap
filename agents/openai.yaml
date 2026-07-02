@@ -1,0 +1,4 @@
+interface:
+  display_name: "Unity Agent Knowledge Bootstrap"
+  short_description: "Bootstrap Unity projects for agent work"
+  default_prompt: "Use $unity-agent-knowledge-bootstrap to initialize an agent knowledge base for this Unity project."
