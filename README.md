@@ -6,7 +6,7 @@ This skill helps Codex, Claude, or another coding agent orient inside a real Uni
 
 - agent rules in `AGENTS.md`
 - Unity noise filters in `.rgignore`
-- a Karpathy-style LLM Wiki under `Docs/AgentKnowledge/`
+- a Wiki under `Docs/AgentKnowledge/`
 - static project scans
 - medium-confidence roadmaps for scripts, scenes, configs, and modules
 
