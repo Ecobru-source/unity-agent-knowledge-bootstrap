@@ -28,6 +28,13 @@ Always:
 - ask for confirmation before running the same command without `--dry-run`
 - stop without writing when the target is not a Unity project
 
+## Dependencies and Portability
+
+- Requires Python 3.10+.
+- Uses only the Python standard library and bundled local scripts.
+- Does not require Unity Editor, package installs, network access, or external services.
+- Run scripts from this skill directory and pass `--project` as the Unity project root.
+
 Do not modify:
 
 - `Assets/Scripts/**`
@@ -113,7 +120,54 @@ python3 scripts/lint_unity_agent_knowledge.py --project /path/to/UnityProject
 
 The lint pass checks required files, broken `[[wikilinks]]`, missing index entries, frontmatter, raw source hash drift, orphan pages, and oversized pages.
 
-### 5. Validate the Skill Package
+### 5. Non-Destructive Validation
+
+Use these checks before writing to a real user project:
+
+```bash
+python3 scripts/scan_unity_project.py --project /path/to/UnityProject --json
+python3 scripts/scaffold_unity_agent_knowledge.py --project /path/to/UnityProject --dry-run
+python3 scripts/refresh_unity_agent_knowledge.py --project /path/to/UnityProject --dry-run
+```
+
+Expected observations:
+
+- scan JSON includes `"is_unity_project": true`
+- dry-run output contains `Would write ...`
+- dry-run must not create `AGENTS.md`, `.rgignore`, or `Docs/AgentKnowledge/`
+- a non-Unity target exits with code `2` and prints `No files were written`
+
+For the bundled minimal fixture, this is a representative input:
+
+```bash
+python3 scripts/scan_unity_project.py --project tests/fixtures/minimal-unity-project --json
+```
+
+Expected fixture output includes one C# file, one scene, one package, and one inferred module.
+
+### 6. Quality Checklist
+
+A successful scaffold should create or update:
+
+- `AGENTS.md` with the marked Unity agent knowledge block
+- `.rgignore` with the marked Unity ignore block
+- `Docs/AgentKnowledge/SCHEMA.md`
+- `Docs/AgentKnowledge/home.md`
+- `Docs/AgentKnowledge/index.md`
+- `Docs/AgentKnowledge/log.md`
+- `Docs/AgentKnowledge/project-map.md`
+- `Docs/AgentKnowledge/code-roadmap.md`
+- `Docs/AgentKnowledge/raw/scans/*.json`
+- `Docs/AgentKnowledge/raw/scans/*.md`
+
+The generated pages should:
+
+- avoid copying full source files
+- mark generated roadmap claims as `confidence: medium`
+- link Markdown scan summaries to the full JSON scan
+- leave gameplay, scenes, prefabs, packages, and project settings untouched
+
+### 7. Validate the Skill Package
 
 Before packaging or publishing this skill, run:
 

@@ -84,6 +84,14 @@ It does not modify:
 
 Generated roadmaps are navigation aids, not verified truth. Treat them as `confidence: medium` until an agent checks the relevant source, scene, prefab, or config files for a specific task.
 
+## Dependencies
+
+- Python 3.10+
+- Python standard library only
+- No Unity Editor required
+- No package install required
+- No network access required
+
 ## Quick Start
 
 Download the release asset:
@@ -111,6 +119,12 @@ Run a refresh after meaningful project structure changes:
 
 ```bash
 python3 scripts/refresh_unity_agent_knowledge.py --project /path/to/UnityProject
+```
+
+For real projects, run refresh as dry-run first:
+
+```bash
+python3 scripts/refresh_unity_agent_knowledge.py --project /path/to/UnityProject --dry-run
 ```
 
 ## Typical Workflow
@@ -155,6 +169,35 @@ python3 tests/smoke_test.py
 ```
 
 The smoke test covers scan, dry-run scaffold, real scaffold, lint, and non-Unity directory blocking.
+
+For a no-write check on the fixture:
+
+```bash
+python3 scripts/scan_unity_project.py --project tests/fixtures/minimal-unity-project --json
+python3 scripts/scaffold_unity_agent_knowledge.py --project tests/fixtures/minimal-unity-project --dry-run --no-refresh
+```
+
+Expected observations:
+
+- scan JSON reports `"is_unity_project": true`
+- the fixture has one C# file, one scene, one package, and one inferred module
+- dry-run output prints `Would write ...`
+- dry-run does not create `AGENTS.md`, `.rgignore`, or `Docs/AgentKnowledge/`
+
+## Quality Checklist
+
+A successful scaffold creates or updates:
+
+- `AGENTS.md` marked block
+- `.rgignore` marked block
+- `Docs/AgentKnowledge/SCHEMA.md`
+- `Docs/AgentKnowledge/home.md`
+- `Docs/AgentKnowledge/index.md`
+- `Docs/AgentKnowledge/log.md`
+- generated roadmap pages
+- raw Markdown and JSON scans
+
+Generated pages should avoid copying full source files, keep static-scan claims at `confidence: medium`, and leave Unity business files untouched.
 
 ## When To Use It
 
