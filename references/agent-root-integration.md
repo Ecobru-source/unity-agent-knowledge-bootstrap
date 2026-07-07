@@ -6,6 +6,8 @@ Use this reference when the Unity project is already the active agent root.
 
 Scaffold in place. Do not move the Unity project and do not require a lightweight wrapper directory.
 
+Run dry-run first, summarize the managed writes, and continue only after explicit user confirmation.
+
 The skill should add only:
 
 - a marked block in `AGENTS.md`

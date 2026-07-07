@@ -17,6 +17,17 @@ Default to non-business changes only. This skill may create or update:
 - `.rgignore`
 - `Docs/AgentKnowledge/**`
 
+## Write Authorization
+
+Treat every non-dry-run scaffold or refresh as a local write operation that needs explicit user confirmation.
+
+Always:
+
+- run `--dry-run` before scaffold or refresh when preparing a real user project
+- summarize the exact files or managed blocks that will be created or updated
+- ask for confirmation before running the same command without `--dry-run`
+- stop without writing when the target is not a Unity project
+
 Do not modify:
 
 - `Assets/Scripts/**`
@@ -45,6 +56,7 @@ python3 scripts/scan_unity_project.py --project /path/to/UnityProject --json
 ```
 
 Use the JSON or Markdown scan to explain what will be initialized, especially when `AGENTS.md`, `.rgignore`, or `Docs/AgentKnowledge` already exist.
+Do not proceed to write operations until the user confirms the target and planned changes.
 
 ### 2. Scaffold the Agent Knowledge Layer
 
@@ -54,6 +66,8 @@ Run:
 python3 scripts/scaffold_unity_agent_knowledge.py --project /path/to/UnityProject --dry-run
 python3 scripts/scaffold_unity_agent_knowledge.py --project /path/to/UnityProject
 ```
+
+After the dry-run, stop and summarize the planned writes. Continue with the non-dry-run command only after explicit user confirmation.
 
 The scaffold script:
 
@@ -74,6 +88,8 @@ Run this when the Unity project structure changes:
 ```bash
 python3 scripts/refresh_unity_agent_knowledge.py --project /path/to/UnityProject
 ```
+
+For a real user project, first run the same command with `--dry-run`, summarize the generated pages and raw scan files, and ask for confirmation before writing.
 
 Refresh writes:
 

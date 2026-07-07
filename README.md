@@ -65,6 +65,8 @@ The raw JSON scan preserves complete structured scan data. The Markdown scan is 
 
 This skill is intentionally non-business by default.
 
+For real projects, run dry-run first, review the planned writes, and get explicit confirmation before running scaffold or refresh without `--dry-run`.
+
 It does not modify:
 
 - `Assets/Scripts/**`
